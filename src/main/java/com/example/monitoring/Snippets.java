@@ -250,18 +250,30 @@ public class Snippets {
    * Demonstrates listing time series using a filter.
    */
   void listTimeSeries(String filter,File file) throws IOException {
+    System.out.println("File :"+file);
+    System.out.println("File exist" + file.exists());
     // [START monitoring_read_timeseries_simple]
     MetricServiceClient metricServiceClient = MetricServiceClient.create();
-    String projectId = "wso2-sp-distributed-216804";
-    ProjectName name = ProjectName.of("wso2-sp-distributed-216804");
+    String projectId = "wso2-sp-distributed-240009";
+    ProjectName name = ProjectName.of("wso2-sp-distributed-240009");
 
     // Restrict time to last 24 hours
       long t1=System.currentTimeMillis();
-      long startMillis = System.currentTimeMillis()-(9140969);
-      TimeInterval interval = TimeInterval.newBuilder()
-        .setStartTime(Timestamps.fromMillis(startMillis))
-        .setEndTime(Timestamps.fromMillis(startMillis+ (16*60*1000)))
-        .build();
+      long startMillis = 1558856257504L;
+      long endMillis =   1558858965345L;
+    System.out.println("current time "+t1);
+    System.out.println("Time Stamps refers");
+    System.out.println(startMillis);
+
+//      TimeInterval interval = TimeInterval.newBuilder()
+//        .setStartTime(Timestamps.fromMillis(t1-179664  *1000))
+//        .setEndTime(Timestamps.fromMillis(t1- (179664  *1000)+1*60*60*1000))
+//        .build();
+
+    TimeInterval interval = TimeInterval.newBuilder()
+            .setStartTime(Timestamps.fromMillis(startMillis))
+            .setEndTime(Timestamps.fromMillis(endMillis))
+            .build();
 
 
     ListTimeSeriesRequest.Builder requestBuilder = ListTimeSeriesRequest.newBuilder()
@@ -270,6 +282,7 @@ public class Snippets {
         .setInterval(interval);
 
     ListTimeSeriesRequest request = requestBuilder.build();
+    //System.out.println(request);
 
     ListTimeSeriesPagedResponse response = metricServiceClient.listTimeSeries(request);
 
@@ -294,12 +307,15 @@ public class Snippets {
       BufferedWriter bw = null;
       FileWriter fw = null;
 
-      try {;
+      try {
 
 
         if (!file.exists()) {
+          file.getParentFile().mkdirs();
           file.createNewFile();
         }
+        System.out.println("New File "+file.exists());
+        System.out.println("Absolute File Path "+file.getAbsolutePath());
         fw = new FileWriter(file.getAbsoluteFile(), true);
         bw = new BufferedWriter(fw);
 
@@ -309,7 +325,7 @@ public class Snippets {
         System.out.println("Done writing json string");
 
       } catch (IOException e) {
-
+        System.out.println("check whether file writing exception");
         e.printStackTrace();
 
       }

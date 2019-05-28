@@ -26,7 +26,7 @@ Build your project with:
 
 You can then run a given `ClassName` via:
 
-	mvn exec:java -Dexec.mainClass=com.example.monitoring.ClassName \
+	mvn exec:java -Dexec.mainClass=com.example.monitoring.Cl-assName \
 	    -DpropertyName=propertyValue \
 		-Dexec.args="arg1 'arg 2' arg3"
 
